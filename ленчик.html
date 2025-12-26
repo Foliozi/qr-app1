@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>QR Profile</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body {
+            background: #0f0f0f;
+            color: #fff;
+            font-family: Arial;
+            text-align: center;
+        }
+        .profile {
+            display: none;
+            margin-top: 20px;
+            background: #1c1c1c;
+            padding: 20px;
+            border-radius: 15px;
+        }
+        img {
+            width: 220px;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>📷 Сканируй QR-код</h2>
+<div id="reader" style="width:300px;margin:auto;"></div>
+
+<div class="profile" id="profile">
+    <img id="photo">
+    <h2 id="fullname"></h2>
+    <p id="data"></p>
+    <audio id="music" autoplay controls></audio>
+</div>
+
+<script>
+// =======================
+// ЗДЕСЬ ТЫ ВПИСЫВАЕШЬ ДАННЫЕ
+// =======================           
+const profiles = {
+    "profile1": {
+        photo: "/home/hell/qr-app/Снимок экрана от 2025-12-26 12-39-34.png",      // пример: "photo.jpg"
+        fullname: "Саныч",   // пример: "Иван Иванов"
+        data: `
+            Возраст:43 <br>
+            Город:Аляска  <br>
+            Телефон:+09789576 <br>
+            Доп. информация: чебурек
+        `,
+        music: "/home/hell/qr-app/l3d1-74t4-s4-zv2zd4j-p4ln161-v2rs361.mp3"       // пример: "music.mp3"
+    }
+};
+// =======================
+
+function onScanSuccess(text) {
+    const p = profiles[text];
+    if (!p) {
+        alert("Данные не найдены");
+        return;
+    }
+
+    document.getElementById("photo").src = p.photo;
+    document.getElementById("fullname").innerHTML = p.fullname;
+    document.getElementById("data").innerHTML = p.data;
+    document.getElementById("music").src = p.music;
+
+    document.getElementById("profile").style.display = "block";
+}
+
+new Html5Qrcode("reader").start(
+    { facingMode: "environment" },
+    { fps: 10, qrbox: 250 },
+    onScanSuccess
+);
+</script>
+
+</body>
+</html>
